@@ -4,7 +4,7 @@ Lets create topic, publish couple of messages into the topic and then consume th
 
 ### Producing messages
 
-We produce 10 messages and send them to Kafka. 
+We produce 10 messages and send them to Kafka.
 
 ```
 import org.apache.kafka.clients.producer.*;
@@ -52,7 +52,7 @@ public class MyProducer {
 
 ### Consuming messages
 
-This code starts new thread which reads messages that have been produced in last 1 second. 
+This code starts new thread which reads messages that have been produced in last 1 second.
 
 ```
 import org.apache.kafka.clients.consumer.Consumer;
@@ -106,7 +106,21 @@ public class MyConsumer {
         return consumer;
     }
 }
+```
 
+When we start `MyConsumer` and then produce some messages using `MyProducer`, we will se this in the console. 
+
+```
+0
+0
+0
+10
+0
+10
+0
+1
+9
+0
 ```
 
 
