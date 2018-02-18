@@ -1,6 +1,6 @@
 # Console Client
 
-We are going to look how to use Kafka from command line. 
+We are going to look how to use Kafka from command line.
 
 ### Create topic
 
@@ -8,20 +8,21 @@ The first thing we need to do is to create a topic.
 
 ```
 ➜ kafka-topics --create \
-  --zookeeper localhost:2181 \
-  --replication-factor 1 \
-  --partitions 12 \
-  --topic my-topic
+    --zookeeper localhost:2181 \
+    --replication-factor 1 \
+    --partitions 12 \
+    --topic my-topic
 
 Created topic "my-topic".
 ```
 
 ### List topics
 
-When there are existing topics in Kafka, we can list them. 
+When there are existing topics in Kafka, we can list them.
 
 ```
-➜ kafka-topics --list --zookeeper localhost:2181
+➜ kafka-topics --list \
+  --zookeeper localhost:2181
 
 __consumer_offsets
 my-topic
@@ -29,7 +30,7 @@ my-topic
 
 ### Produce messages
 
-We are going to send couple of messages into Kafka. 
+We are going to send couple of messages into Kafka.
 
 ```
 ➜ kafka-console-producer \

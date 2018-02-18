@@ -71,13 +71,56 @@ listeners=PLAINTEXT://:9094
 log.dirs=/usr/local/var/lib/kafka-logs-2
 ```
 
+Now we can start up the two brokers we made the configuration for.
 
+```
+➜ /usr/local/opt/kafka/bin/kafka-server-start broker1.properties &
+➜ /usr/local/opt/kafka/bin/kafka-server-start broker2.properties &
+```
 
+We can create topic that will be using 3 brokers we have started up so far.
 
+```
+➜ kafka-topics --create \
+    --zookeeper localhost:2181 \
+    --replication-factor 3 \
+    --partitions 1 \
+    --topic my-replicated-topic
+Created topic "my-replicated-topic".
+```
 
+We can see what is happening in the cluster using `describe topics` command.
 
+```
+➜ kafka-topics --describe \
+--zookeeper localhost:2181 \
+--topic my-replicated-topic
+Topic:my-replicated-topic    PartitionCount:1    ReplicationFactor:3    Configs:
+    Topic: my-replicated-topic    Partition: 0    Leader: 1    Replicas: 1,2,0    Isr: 1,2,0
+```
 
+* leader is node that is responsible for all reads and writes for given partition, if we would set partitions to 2, we would see two lines here
+* replicas - list of all nodes that replicate the log for this partition
+* isr - in-sync replicas, or "alive" replicas
 
+If we want to kill the nodes we created, we first get the process id and then kill it.
+
+```
+➜ ps aux | grep broker1.properties
+ondrej           66855   0.0  1.8......
+....
+➜ kill -9 66855
+```
+
+Now we can check what --describe command returns when we run it again, after we have killed one broker.
+
+```
+➜ kafka-topics --describe \
+--zookeeper localhost:2181 \
+--topic my-replicated-topic
+Topic:my-replicated-topic    PartitionCount:1    ReplicationFactor:3    Configs:
+    Topic: my-replicated-topic    Partition: 0    Leader: 2    Replicas: 1,2,0    Isr: 2,0
+```
 
 
 
